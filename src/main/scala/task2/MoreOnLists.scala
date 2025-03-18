@@ -5,7 +5,9 @@ import Person.*
 import u03.Sequences.*
 import Sequence.*
 
-object PersonFunctions:
+import scala.annotation.tailrec
+
+object MoreOnLists:
   def getCourses(s: Sequence[Person]): Sequence[String] =
     val isTeacher: Person => Boolean =
       case Teacher(_, _) => true
