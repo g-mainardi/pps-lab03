@@ -16,3 +16,8 @@ object MoreOnLists:
       case Teacher(_, c) => c
       case _ => ""
     map(filter(s)(isTeacher))(getCourse)
+
+  @tailrec
+  def foldLeft[A, B](s: Sequence[A])(acc: B)(operator: (B, A) => B): B = s match
+    case Cons(h, t) => foldLeft(t)(operator(acc,h))(operator)
+    case _ => acc

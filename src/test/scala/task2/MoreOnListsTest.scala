@@ -28,5 +28,9 @@ class MoreOnListsTest:
     assertEquals(courses, getCourses(teachers))
     assertEquals(courses, getCourses(people))
 
-end PersonFunctionsTest
+  @Test def testFoldLeft() =
+    val lst = Cons(3, Cons(7, Cons(1, Cons(5, Nil()))))
+    assertEquals(-16, foldLeft(lst)(0)(_ - _))
+    assertEquals("start-3-7-1-5", foldLeft(lst)("start")(_ + "-" + _))
+  
 end MoreOnListsTest
