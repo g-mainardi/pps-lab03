@@ -100,7 +100,7 @@ object Sequences: // Essentially, generic linkedlists
     def min(s: Sequence[Int]): Optional[Int] =
       def _min(s: Sequence[Int])(minValue: Optional[Int]): Optional[Int] = s match
         case Cons(h, t) if h < orElse(minValue, Int.MaxValue) => _min(t)(Just(h))
-        case Cons(h, t) => _min(t)(minValue)
+        case Cons(_, t) => _min(t)(minValue)
         case _ => minValue
       _min(s)(Empty())
 
@@ -109,7 +109,12 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [10, 20, 30] => [10, 30]
      * E.g., [10, 20, 30, 40] => [10, 30]
      */
-    def evenIndices[A](s: Sequence[A]): Sequence[A] = ???
+    def evenIndices[A](s: Sequence[A]): Sequence[A] =
+      def _even(s: Sequence[A])(even: Boolean): Sequence[A] = (s, even) match
+        case (Cons(h, t), true) => Cons(h, _even(t)(false))
+        case (Cons(_, t), false) => _even(t)(true)
+        case _ => Nil()
+      _even(s)(true)
 
     /*
      * Check if the sequence contains the element
