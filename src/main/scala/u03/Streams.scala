@@ -39,6 +39,10 @@ object Streams extends App:
 
     // Task 3
     
+    def takeWhile[A](stream: Stream[A])(pred: A => Boolean): Stream[A] = stream match
+      case Cons(h, t) if pred(h()) => cons(h(), takeWhile(t())(pred))
+      case _ => Empty()
+
   end Stream
 end Streams
 
