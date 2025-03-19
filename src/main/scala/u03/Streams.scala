@@ -47,6 +47,10 @@ object Streams extends App:
       case n if n > 0 => cons(el, fill(n - 1)(el))
       case _ => Empty() 
 
+    def fibonacci(): Stream[Int] =
+      def _fib(n0: Int)(n1: Int): Stream[Int] = cons(n0 + n1, _fib(n1)(n0+n1))
+      cons(0, cons(1, _fib(0)(1)))
+
   end Stream
 end Streams
 
