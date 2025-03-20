@@ -39,4 +39,9 @@ class StreamTest:
     assertEquals(Cons(0, Cons(1, Cons(1, Cons(2, Cons(3, Nil()))))), str1)
     assertEquals(Cons(0, Cons(1, Cons(1, Cons(2, Cons(3, Cons(5, Cons(8, Cons(13, Nil())))))))), str2)
 
+  @Test def testInterleave(): Unit =
+    val s1 = Stream.take(Stream.iterate(1)(_ + 2))(3)
+    val s2 = Stream.take(Stream.iterate(2)(_ + 2))(5)
+    val result = Stream.toList(Stream.interleave(s1, s2))
+    assertEquals(Cons(1, Cons(2, Cons(3, Cons(4, Cons(5, Cons(6, Cons(8, Cons(10, Nil())))))))), result)
 end StreamTest

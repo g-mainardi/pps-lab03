@@ -51,6 +51,11 @@ object Streams extends App:
       def _fib(n0: Int)(n1: Int): Stream[Int] = cons(n0 + n1, _fib(n1)(n0+n1))
       cons(0, cons(1, _fib(0)(1)))
 
+    def interleave[A](s1: Stream[A], s2: Stream[A]): Stream[A] = (s1, s2) match
+      case (Cons(h, t), s) => cons(h(), interleave(s, t()))
+      case (_, Cons(h, t)) => interleave(cons(h(), t()), Empty())
+      case _ => Empty()
+
   end Stream
 end Streams
 
