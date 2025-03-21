@@ -44,4 +44,17 @@ class StreamTest:
     val s2 = Stream.take(Stream.iterate(2)(_ + 2))(5)
     val result = Stream.toList(Stream.interleave(s1, s2))
     assertEquals(Cons(1, Cons(2, Cons(3, Cons(4, Cons(5, Cons(6, Cons(8, Cons(10, Nil())))))))), result)
+
+  @Test def testLimitedCycle(): Unit =
+    val repeatStrings = limitedCycle("a")("b")
+    val repeatInt = limitedCycle(1)(2)
+    assertEquals(Cons("a", Cons("b", Cons("a", Cons("b", Cons("a", Nil()))))), toList(Stream.take(repeatStrings)(5)))
+    assertEquals(Cons(1, Cons(2, Cons(1, Cons(2, Nil())))), toList(Stream.take(repeatInt)(4)))
+
+  @Test def testCycle(): Unit =
+    val repeatStrings = cycle(Cons("a", Cons("b", Cons("c", Nil()))))
+    val repeatInt = cycle(Cons(1, Cons(2, Nil())))
+    assertEquals(Cons("a", Cons("b", Cons("c", Cons("a", Cons("b", Nil()))))), toList(Stream.take(repeatStrings)(5)))
+    assertEquals(Cons(1, Cons(2, Cons(1, Cons(2, Nil())))), toList(Stream.take(repeatInt)(4)))
+
 end StreamTest
