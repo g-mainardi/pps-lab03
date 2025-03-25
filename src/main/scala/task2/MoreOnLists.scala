@@ -11,11 +11,11 @@ object MoreOnLists:
   val isTeacher: Person => Boolean =
     case Teacher(_, _) => true
     case _ => false
-  val getCourse: Person => String =
+  val courseOrElseEmpty: Person => String =
     case Teacher(_, c) => c
     case _ => ""
   def getCourses(s: Sequence[Person]): Sequence[String] =
-      map(filter(s)(isTeacher))(getCourse)
+      map(filter(s)(isTeacher))(courseOrElseEmpty)
 
   @tailrec
   def foldLeft[A, B](s: Sequence[A])(acc: B)(operator: (B, A) => B): B = s match
