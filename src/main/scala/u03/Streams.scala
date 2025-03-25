@@ -59,28 +59,10 @@ object Streams extends App:
       case _ => s2
 
     def cycle[A](lst: Sequence[A]): Stream[A] =
-      lazy val lista = lst
-      def _cycle(lst: () => Sequence[A]): Stream[A] = lst() match
-        case Sequence.Cons(h, t) => cons(h, _cycle(() => t))
+      def _cycle(s: Sequence[A]): Stream[A] = s match
+        case Sequence.Cons(h, t) => cons(h, _cycle(t))
         case _ => _cycle(lst)
-      _cycle(() => lista)
-
-    def cycle2[A](lst: => Sequence[A]): Stream[A] =
-      lazy val lista = lst
-      lista match
-        case Sequence.Cons(h, t) => cons(h, cycle2(t))
-        case _ => cycle2(lista)
-
-    def toStream[A](lst: Sequence[A]): Stream[A] = lst match
-      case Sequence.Cons(h, t) => cons(h, toStream(t))
-      case _ => Empty()
-
-    def cycleStream[A](lst: Sequence[A]): Stream[A] =
-      lazy val str: Stream[A] = toStream(lst)
-      def _cycle(s: => Stream[A]): Stream[A] = s match
-      case Cons(h, t) => cons(h(), _cycle(t()))
-      case _ => _cycle(s)
-      _cycle(str)
+      _cycle(lst)
 
     // Works with two values, to be extended for a list of values 
     def limitedCycle[A](first: => A)(second: => A): Stream[A] =
