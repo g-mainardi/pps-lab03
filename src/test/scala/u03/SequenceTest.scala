@@ -65,7 +65,8 @@ class SequenceTest:
     assertEquals(false, contains(Nil())(10))
 
   @Test def testDistinct() =
-    assertEquals(Cons(10, Cons(20, Cons(30, Nil()))), distinct(sequence))
+    val duplicatedSequence = concat(sequence, Cons(10, Nil())) // concat(sequence, sequence)
+    assertEquals(Cons(10, Cons(20, Cons(30, Nil()))), distinct(duplicatedSequence))
     assertEquals(Cons(10, Cons(20, Nil())), distinct(Cons(10, Cons(10, Cons(20, Nil())))))
     assertEquals(Nil(), distinct(Nil()))
 
