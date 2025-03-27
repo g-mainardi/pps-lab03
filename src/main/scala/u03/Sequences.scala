@@ -136,6 +136,22 @@ object Sequences: // Essentially, generic linkedlists
         case _ => Nil()
       _distinct(s)(Nil())
 
+    def distinctWithAppend[A](s: Sequence[A]): Sequence[A] =
+      @tailrec
+      def _distinct(s: Sequence[A])(acc: Sequence[A]): Sequence[A] = s match
+        case Cons(h, t) if !contains(acc)(h) => _distinct(t)(concat(acc, Cons(h, Nil())))
+        case Cons(_, t) => _distinct(t)(acc)
+        case _ => acc
+      _distinct(s)(Nil())
+
+    def distinctWithReverse[A](s: Sequence[A]): Sequence[A] =
+      @tailrec
+      def _distinct(s: Sequence[A])(acc: Sequence[A]): Sequence[A] = s match
+        case Cons(h, t) if !contains(acc)(h) => _distinct(t)(Cons(h, acc))
+        case Cons(_, t) => _distinct(t)(acc)
+        case _ => acc
+      reverse(_distinct(s)(Nil()))
+
     /*
      * Group contiguous elements in the sequence
      * E.g., [10, 10, 20, 30] => [[10, 10], [20], [30]]
@@ -144,6 +160,7 @@ object Sequences: // Essentially, generic linkedlists
      */
     def group[A](s: Sequence[A]): Sequence[Sequence[A]] =
       def _group(s: Sequence[A])(acc: Sequence[A]): Sequence[Sequence[A]] = (s, acc) match
+        //        case (Cons(h1, t), Cons(h2, _)) if h1 != h2 => Cons(acc, _group(Cons(h1, t))(Nil())) // meglio?
         case (Cons(h1, t), Cons(h2, _)) if h1 != h2 => Cons(acc, _group(t)(Cons(h1, Nil())))
         case (Cons(h, t), _) => _group(t)(Cons(h, acc))
         case (_, Nil()) => Nil()
